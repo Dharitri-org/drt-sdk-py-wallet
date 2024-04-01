@@ -124,9 +124,9 @@ def test_sign_transaction():
     signer = UserSigner.from_pem_file(Path("./dharitri_sdk_wallet/testdata/alice.pem"))
     verifier = UserVerifier.from_address(Address.from_bech32("moa1qyu5wthldzr8wx5c9ucg8kjagg0jfs53s8nr3zpz3hypefsdd8ssfq94h8"))
 
-    tx.signature = signer.sign(tx)
+    tx.signature = signer.sign(tx.serialize_for_signing())
     assert tx.signature.hex() == "686bcb4057948d1a6109ea27c350807855b7ef874cd6ca0ab353acaec5bfa2c8b42aa4755cd2316c54cbc82d440ca16c4d87b878f5283371be93a5adf838630b"
-    assert verifier.verify(tx)
+    assert verifier.verify(tx.serialize_for_signing(), tx.signature)
 
 
 def test_sign_message():
@@ -135,9 +135,9 @@ def test_sign_message():
     signer = UserSigner.from_pem_file(Path("./dharitri_sdk_wallet/testdata/alice.pem"))
     verifier = UserVerifier.from_address(Address.from_bech32("moa1qyu5wthldzr8wx5c9ucg8kjagg0jfs53s8nr3zpz3hypefsdd8ssfq94h8"))
 
-    message.signature = signer.sign(message)
+    message.signature = signer.sign(message.serialize_for_signing())
     assert message.signature.hex() == "561bc58f1dc6b10de208b2d2c22c9a474ea5e8cabb59c3d3ce06bbda21cc46454aa71a85d5a60442bd7784effa2e062fcb8fb421c521f898abf7f5ec165e5d0f"
-    assert verifier.verify(message)
+    assert verifier.verify(message.serialize_for_signing(), message.signature)
 
 
 def test_user_pem_save():
