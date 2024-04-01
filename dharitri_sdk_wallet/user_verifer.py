@@ -1,6 +1,6 @@
 from dharitri_sdk_core import Address
 
-from dharitri_sdk_wallet.interfaces import IAddress, IVerifiable
+from dharitri_sdk_wallet.interfaces import IAddress, ISignature
 from dharitri_sdk_wallet.user_keys import UserPublicKey
 
 
@@ -14,6 +14,5 @@ class UserVerifier:
         public_key = UserPublicKey(buffer)
         return UserVerifier(public_key)
 
-    def verify(self, message: IVerifiable) -> bool:
-        data = message.serialize_for_signing()
-        return self.public_key.verify(data, message.signature)
+    def verify(self, data: bytes, signature: ISignature) -> bool:
+        return self.public_key.verify(data, signature)
